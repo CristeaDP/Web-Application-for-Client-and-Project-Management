@@ -48,6 +48,5 @@ Aplicația respectă modelul de design **MVC** (Model-View-Controller):
 * **Templates:** Fișiere HTML (Thymeleaf) care definesc structura vizuală și interacțiunea cu utilizatorul.
 
 ---
-**Student:** Cristea Denis-Petrisor  
-**Grup:** 434E  
+**Student:** Cristea Denis-Petrisor   
 **Prof. Coordonator:** Ş.l. Dr. Ing. Pupezescu Valentin

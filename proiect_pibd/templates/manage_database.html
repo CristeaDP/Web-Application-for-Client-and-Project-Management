@@ -1,0 +1,98 @@
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Database | Shop Management</title>
+    {% bootstrap_css %}
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-danger mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}">⚠️ Database Administration</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="mb-4 text-danger">Delete Records</h2>
+        <p class="text-muted">Select an item from the lists below to remove it from the system.</p>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm border-danger h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">Remove Shop</h5>
+                        <p class="small text-muted">Warning: Removing a shop might fail if it has active memberships.</p>
+                        <select class="form-select mb-3" id="sSel">
+                            {% for s in shops %}
+                                <option value="{{ s.id_shop }}">{{ s.name }}</option>
+                            {% empty %}
+                                <option disabled>No shops found</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-danger w-100" onclick="del('shop')">Delete Shop</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm border-danger h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">Remove Person</h5>
+                        <p class="small text-muted">Delete a person's profile and their contact information.</p>
+                        <select class="form-select mb-3" id="pSel">
+                            {% for p in persons %}
+                                <option value="{{ p.id_person }}">{{ p.first_name }} {{ p.last_name }}</option>
+                            {% empty %}
+                                <option disabled>No persons found</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-danger w-100" onclick="del('person')">Delete Person</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm border-danger h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">Remove Membership</h5>
+                        <p class="small text-muted">Break the connection between a person and a shop.</p>
+                        <select class="form-select mb-3" id="mSel">
+                            {% for m in memberships %}
+                                <option value="{{ m.id_membership }}">{{ m.person.last_name }} @ {{ m.shop.name }}</option>
+                            {% empty %}
+                                <option disabled>No memberships found</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-danger w-100" onclick="del('membership')">Delete Link</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5 border-top pt-4">
+            <a href="{% url 'home' %}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+    function del(type) {
+        // Obținem ID-ul din select-ul corespunzător (sSel, pSel sau mSel)
+        let prefix = type === 'shop' ? 's' : (type === 'person' ? 'p' : 'm');
+        let selectElement = document.getElementById(prefix + 'Sel');
+
+        if (!selectElement.value) {
+            alert("Please select an item first.");
+            return;
+        }
+
+        let id = selectElement.value;
+        if (confirm("Are you sure? This will permanently delete this " + type + " record.")) {
+            // Aceasta va redirecționa către un URL de tipul: /delete_shop/5/
+            window.location.href = "/delete_" + type + "/" + id + "/";
+        }
+    }
+    </script>
+</body>
+</html>

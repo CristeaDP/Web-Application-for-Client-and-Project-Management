@@ -1,0 +1,100 @@
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Records | Shop Management</title>
+    {% bootstrap_css %}
+    <style>
+        body { background-color: #f4f7f6; }
+        .card { border-top: 5px solid #0d6efd; height: 100%; }
+        /* Fix for the overlapping issue: ensure minimum height */
+        .card-body { min-height: 180px; display: flex; flex-direction: column; justify-content: space-between; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark mb-4 shadow">
+        <div class="container"><a class="navbar-brand" href="{% url 'home' %}">✏️ Data Editor</a></div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-5">Select a Record to Update</h2>
+        <div class="row g-4 justify-content-center">
+
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5>Modify Shop</h5>
+                        <select class="form-select mb-3" id="editShop">
+                            <option selected disabled value="">Choose Shop...</option>
+                            {% for s in shops %}
+                                <option value="{{ s.id_shop }}">{{ s.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-primary w-100" onclick="goToEdit('shop')">Edit Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5>Modify Person</h5>
+                        <select class="form-select mb-3" id="editPerson">
+                            <option selected disabled value="">Choose Person...</option>
+                            {% for p in persons %}
+                                <option value="{{ p.id_person }}">{{ p.first_name }} {{ p.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-primary w-100" onclick="goToEdit('person')">Edit Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5>Modify Membership</h5>
+                        <select class="form-select mb-3" id="editMembership">
+                            <option selected disabled value="">Choose Membership...</option>
+                            {% for m in memberships %}
+                                <option value="{{ m.id_membership }}">{{ m.person.last_name }} @ {{ m.shop.name }}</option>
+                            {% empty %}
+                                <option disabled>No memberships found</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-primary w-100" onclick="goToEdit('membership')">Edit Details</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'home' %}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+    function goToEdit(type) {
+        let selectId;
+        // Map types to the specific HTML IDs
+        if (type === 'shop') selectId = 'editShop';
+        else if (type === 'person') selectId = 'editPerson';
+        else if (type === 'membership') selectId = 'editMembership';
+
+        const dropdown = document.getElementById(selectId);
+        const id = dropdown.value;
+
+        // Check if a value exists and isn't empty
+        if (!id || id === "") {
+            alert("Please select a record first!");
+            return;
+        }
+
+        // Redirects to /edit-shop/ID/ or /edit-person/ID/ etc.
+        window.location.href = "/edit-" + type + "/" + id + "/";
+    }
+    </script>
+</body>
+</html>

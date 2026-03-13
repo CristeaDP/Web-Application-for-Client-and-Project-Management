@@ -1,4 +1,4 @@
-# 📊 Sistem de Gestiune Clienți și Proiecte (PIBD)
+# 📊 Sistem de Gestionare Clienți și Proiecte (PIBD)
 
 Acest proiect a fost dezvoltat pentru disciplina **Programarea Interfețelor pentru Baze de Date** (Universitatea Națională de Științe și Tehnologie Politehnica București) și propune o soluție completă pentru gestionarea relației dintre clienți și proiectele unei companii.
 
